@@ -4,9 +4,11 @@ const categoryController = require('../controllers/categoryController');
 
 // Định nghĩa các route CRUD
 router.get('/', categoryController.getAllCategories);
+router.get('/create', categoryController.getAddCategory);
+router.post('/create', categoryController.postAddCategory);
 router.get('/:id', categoryController.getCategoryById);
-router.post('/', categoryController.createCategory);
-router.put('/:id', categoryController.updateCategory);
+router.get('/edit/:id', categoryController.getEditCategory);
+router.put('/edit/:id', categoryController.editCategory);
 router.delete('/:id', categoryController.deleteCategory);
 
 module.exports = router;
