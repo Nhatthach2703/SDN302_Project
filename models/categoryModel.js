@@ -2,12 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const categorySchema = new Schema({
-  categoryId: { 
-    type: String, 
-    required: [true, 'Category ID is required'], 
-    unique: true,
-    match: [/^[A-Z]{3,}$/, 'Category ID must be at least 3 uppercase letters (e.g., PET)']
-  },
   name: { 
     type: String, 
     required: [true, 'Category name is required'],
@@ -19,6 +13,7 @@ const categorySchema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
+// Middleware cập nhật updatedAt trước khi lưu
 categorySchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   next();
