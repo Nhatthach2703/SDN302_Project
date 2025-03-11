@@ -95,7 +95,7 @@ exports.postAddCategory = async (req, res) => {
     const { name } = req.body;
 
     if (!name) {
-      return res.render('categories/create', { error: 'Vui lòng nhập tên danh mục' });
+      return res.render('categories/create', { error: 'Category name is require!!!' });
     }
 
     const newCategory = new Category({ name });
@@ -103,7 +103,7 @@ exports.postAddCategory = async (req, res) => {
 
     res.redirect('/categories');
   } catch (error) {
-    res.render('categories/create', { error: 'Lỗi khi thêm danh mục' });
+    res.render('categories/create', { error: 'Name must be at least 2 characters and cannot exceed 50 characters' });
   }
 };
 
@@ -112,11 +112,11 @@ exports.getEditCategory = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
     if (!category) {
-      return res.status(404).send('Danh mục không tồn tại');
+      return res.status(404).send('Category dont exist');
     }
     res.render('categories/edit', { category, error: null });
   } catch (error) {
-    res.status(500).send('Lỗi khi lấy danh mục');
+    res.status(500).send('A problem occurs when taking Category data');
   }
 };
 
@@ -126,13 +126,13 @@ exports.editCategory = async (req, res) => {
     const { name } = req.body;
 
     if (!name) {
-      return res.render('categories/edit', { error: 'Vui lòng nhập tên danh mục', category: { _id: req.params.id, name } });
+      return res.render('categories/edit', { error: 'Category name is require!!!', category: { _id: req.params.id, name } });
     }
 
     await Category.findByIdAndUpdate(req.params.id, { name, updatedAt: Date.now() });
 
     res.redirect('/categories');
   } catch (error) {
-    res.render('categories/edit', { error: 'Lỗi khi cập nhật danh mục', category: { _id: req.params.id, name: req.body.name } });
+    res.render('categories/edit', { error: 'A problem occurs when edit Category', category: { _id: req.params.id, name: req.body.name } });
   }
 };
