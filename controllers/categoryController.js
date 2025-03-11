@@ -4,8 +4,9 @@ const Category = require('../models/categoryModel');
 exports.getAllCategories = async (req, res) => {
   try {
     const categories = await Category.find();
-    console.log("Fetched categories:", categories);
-    res.status(200).json(categories);
+    // console.log("Fetched categories:", categories);
+    // res.status(200).json(categories);
+    res.render('categories/listAdmin', { categories });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -76,8 +77,62 @@ exports.deleteCategory = async (req, res) => {
     if (!deletedCategory) {
       return res.status(404).json({ message: 'Category not found' });
     }
-    res.status(200).json({ message: 'Category deleted successfully' });
+    // res.status(200).json({ message: 'Category deleted successfully' });
+    res.redirect('/categories');
   } catch (error) {
     res.status(500).json({ message: "Invalid ID format", error: error.message });
+  }
+};
+
+// Hiển thị trang thêm category
+exports.getAddCategory = (req, res) => {
+  res.render('categories/create', { error: null });
+};
+
+// Xử lý thêm category
+exports.postAddCategory = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    if (!name) {
+      return res.render('categories/create', { error: 'Vui lòng nhập tên danh mục' });
+    }
+
+    const newCategory = new Category({ name });
+    await newCategory.save();
+
+    res.redirect('/categories');
+  } catch (error) {
+    res.render('categories/create', { error: 'Lỗi khi thêm danh mục' });
+  }
+};
+
+// Hiển thị trang chỉnh sửa danh mục
+exports.getEditCategory = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+      return res.status(404).send('Danh mục không tồn tại');
+    }
+    res.render('categories/edit', { category, error: null });
+  } catch (error) {
+    res.status(500).send('Lỗi khi lấy danh mục');
+  }
+};
+
+// Xử lý cập nhật danh mục
+exports.editCategory = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    if (!name) {
+      return res.render('categories/edit', { error: 'Vui lòng nhập tên danh mục', category: { _id: req.params.id, name } });
+    }
+
+    await Category.findByIdAndUpdate(req.params.id, { name, updatedAt: Date.now() });
+
+    res.redirect('/categories');
+  } catch (error) {
+    res.render('categories/edit', { error: 'Lỗi khi cập nhật danh mục', category: { _id: req.params.id, name: req.body.name } });
   }
 };
