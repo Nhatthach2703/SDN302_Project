@@ -8,13 +8,17 @@ const connectDB = require('./config/database');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/authRouter');
+var expressLayouts = require('express-ejs-layouts');
+const categoriesRouter = require('./routes/categoriesRouter');
+const productRouter = require('./routes/productRoutes');
+
 var app = express();
 var session = require('express-session');
 var passport = require('./config/passport');
 require('dotenv').config(); 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -38,6 +42,8 @@ connectDB();
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+app.use('/categories', categoriesRouter);
+app.use('/products', productRouter);
 
 
 // catch 404 and forward to error handler
