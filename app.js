@@ -11,18 +11,31 @@ var authRouter = require('./routes/authRouter');
 var expressLayouts = require('express-ejs-layouts');
 const categoriesRouter = require('./routes/categoriesRouter');
 const productRouter = require('./routes/productRoutes');
-
+const bodyParser = require("body-parser");
+const methodOverride = require("method-override");
 var app = express();
 var session = require('express-session');
 var passport = require('./config/passport');
 require('dotenv').config(); 
+
+
+// Static Files
+app.use(expressLayouts);
+app.use(express.static('public'))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
+app.use('/css', express.static(__dirname + 'public/css'))
+app.use('/img', express.static(__dirname + 'public/images'))
+app.use('/js', express.static(__dirname + 'public/javascripts'))
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('layout', 'layout');
+app.set('views', './views')
+app.set('view engine', 'ejs')
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -59,6 +72,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
+  console.log(err);
   res.render('error');
 });
 
