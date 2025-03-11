@@ -20,12 +20,6 @@ const orderItemSchema = new Schema({
 });
 
 const orderSchema = new Schema({
-  orderId: { 
-    type: String, 
-    required: [true, 'Order ID is required'], 
-    unique: true,
-    match: [/^ORD\d{3,}$/, 'Order ID must start with "ORD" followed by at least 3 digits (e.g., ORD001)']
-  },
   user: { 
     type: Schema.Types.ObjectId, 
     ref: 'User', 
