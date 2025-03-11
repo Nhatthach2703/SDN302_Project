@@ -2,12 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
-  productId: { 
-    type: String, 
-    required: [true, 'Product ID is required'], 
-    unique: true,
-    match: [/^PROD\d{3,}$/, 'Product ID must start with "PROD" followed by at least 3 digits (e.g., PROD001)']
-  },
   name: { 
     type: String, 
     required: [true, 'Product name is required'],
