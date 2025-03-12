@@ -2,6 +2,15 @@ const Product = require('../models/productModel');
 const Category = require('../models/categoryModel');
 var mongoose = require('mongoose');
 
+exports.getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find().populate('category', 'name');
+        res.render('products/listadmin', { products });
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+};
+
 // Hàm tạo query lọc theo tên
 const filterByName = (keyword) => ({
     name: { $regex: new RegExp(keyword, 'i') }
