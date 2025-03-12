@@ -62,7 +62,7 @@ exports.suggestProducts = async (req, res) => {
             .populate('category', 'name')
             .limit(5) // Giới hạn 5 gợi ý
             .select('name type _id'); // Chỉ lấy các trường cần thiết
-
+        console.log(products)
         res.status(200).json(products);
     } catch (error) {
         console.error('Error suggesting products:', error);
