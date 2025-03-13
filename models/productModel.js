@@ -14,14 +14,14 @@ const productSchema = new Schema({
     ref: 'Category', 
     required: [true, 'Category is required']
   },
-  type: { 
-    type: String, 
-    enum: {
-      values: ['pet', 'accessory'],
-      message: 'Type must be either "pet" or "accessory"'
-    }, 
-    required: [true, 'Product type is required']
-  },
+  // type: { 
+  //   type: String, 
+  //   enum: {
+  //     values: ['pet', 'accessory'],
+  //     message: 'Type must be either "pet" or "accessory"'
+  //   }, 
+  //   required: [true, 'Product type is required']
+  // },
   price: { 
     type: Number, 
     required: [true, 'Price is required'],

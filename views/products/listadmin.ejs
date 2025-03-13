@@ -9,7 +9,6 @@
                 <th scope="col">No.</th>
                 <th scope="col">Product Name</th>
                 <th scope="col">Category</th>
-                <th scope="col">Type</th>
                 <th scope="col">Price</th>
                 <th scope="col">Stock</th>
                 <th scope="col">Image</th>
@@ -28,9 +27,6 @@
                     </td>
                     <td>
                         <%= product.category ? product.category.name : 'No category' %>
-                    </td>
-                    <td>
-                        <%= product.type %>
                     </td>
                     <td>
                         <%= product.price.toLocaleString() %> VND
