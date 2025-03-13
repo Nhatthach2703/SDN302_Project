@@ -16,10 +16,6 @@ const filterByName = (keyword) => ({
     name: { $regex: new RegExp(keyword, 'i') }
 });
 
-// Hàm tạo query lọc theo type
-const filterByType = (keyword) => ({
-    type: { $regex: new RegExp(keyword, 'i') }
-});
 
 // Tìm kiếm sản phẩm
 exports.searchProducts = async (req, res) => {
@@ -31,7 +27,7 @@ exports.searchProducts = async (req, res) => {
 
         // Tìm theo cả name và type
         const query = {
-            $or: [filterByName(keyword), filterByType(keyword)]
+            $or: [filterByName(keyword)]
         };
 
         const products = await Product.find(query).populate('category', 'name');
@@ -55,7 +51,7 @@ exports.suggestProducts = async (req, res) => {
         }
 
         const query = {
-            $or: [filterByName(keyword), filterByType(keyword)]
+            $or: [filterByName(keyword)]
         };
 
         const products = await Product.find(query)
@@ -100,11 +96,11 @@ exports.getAddProductPage = async (req, res) => {
 // Create a new product
 exports.createProduct = async (req, res) => {
     try {
-        const { name, category, type, price, stock, image, description, petDetails } = req.body;
+        const { name, category, price, stock, image, description, petDetails } = req.body;
         const existingCategory = await Category.findById(category);
         if (!existingCategory) return res.status(400).send('Invalid category');
 
-        const newProduct = new Product({ name, category, type, price, stock, image, description, petDetails });
+        const newProduct = new Product({ name, category, price, stock, image, description, petDetails });
         await newProduct.save();
 
         res.redirect('/products/admin'); // Redirect to product list
@@ -151,13 +147,13 @@ exports.updateProduct = async (req, res) => {
         }
 
         // Extract data from request
-        const { name, category, type, price, stock, image, description, petDetails } = req.body;
+        const { name, category, price, stock, image, description, petDetails } = req.body;
 
         // Validate required fields
         if (!name || !category || !price || !stock) {
             return res.status(400).render("products/editadmin", {
                 error: "Please fill in all required product details",
-                product: { _id: id, name, category, type, price, stock, image, description, petDetails },
+                product: { _id: id, name, category, price, stock, image, description, petDetails },
                 categories: await Category.find(),
             });
         }
@@ -165,7 +161,7 @@ exports.updateProduct = async (req, res) => {
         // Update product
         const updatedProduct = await Product.findByIdAndUpdate(
             id,
-            { name, category, type, price, stock, image, description, petDetails, updatedAt: Date.now() },
+            { name, category, price, stock, image, description, petDetails, updatedAt: Date.now() },
             { new: true, runValidators: true }
         );
 
