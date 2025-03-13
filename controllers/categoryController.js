@@ -6,7 +6,7 @@ exports.getAllCategories = async (req, res) => {
     const categories = await Category.find();
     // console.log("Fetched categories:", categories);
     // res.status(200).json(categories);
-    res.render('categories/listAdmin', { categories });
+    res.render('categories/listAdmin', { categories, user: req.user || null });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -86,7 +86,7 @@ exports.deleteCategory = async (req, res) => {
 
 // Hiển thị trang thêm category
 exports.getAddCategory = (req, res) => {
-  res.render('categories/create', { error: null });
+  res.render('categories/create', { error: null, user: req.user || null });
 };
 
 // Xử lý thêm category
@@ -95,7 +95,7 @@ exports.postAddCategory = async (req, res) => {
     const { name } = req.body;
 
     if (!name) {
-      return res.render('categories/create', { error: 'Category name is require!!!' });
+      return res.render('categories/create', { error: 'Category name is require!!!', user: req.user || null });
     }
 
     const newCategory = new Category({ name });
@@ -103,7 +103,7 @@ exports.postAddCategory = async (req, res) => {
 
     res.redirect('/categories/admin');
   } catch (error) {
-    res.render('categories/create', { error: 'Name must be at least 2 characters and cannot exceed 50 characters' });
+    res.render('categories/create', { error: 'Name must be at least 2 characters and cannot exceed 50 characters', user: req.user || null });
   }
 };
 
@@ -114,7 +114,7 @@ exports.getEditCategory = async (req, res) => {
     if (!category) {
       return res.status(404).send('Category dont exist');
     }
-    res.render('categories/edit', { category, error: null });
+    res.render('categories/edit', { category, error: null, user: req.user || null });
   } catch (error) {
     res.status(500).send('A problem occurs when taking Category data');
   }
@@ -126,13 +126,13 @@ exports.editCategory = async (req, res) => {
     const { name } = req.body;
 
     if (!name) {
-      return res.render('categories/edit', { error: 'Category name is require!!!', category: { _id: req.params.id, name } });
+      return res.render('categories/edit', { error: 'Category name is require!!!', category: { _id: req.params.id, name }, user: req.user || null });
     }
 
     await Category.findByIdAndUpdate(req.params.id, { name, updatedAt: Date.now() });
 
     res.redirect('/categories/admin');
   } catch (error) {
-    res.render('categories/edit', { error: 'A problem occurs when edit Category', category: { _id: req.params.id, name: req.body.name } });
+    res.render('categories/edit', { error: 'A problem occurs when edit Category', category: { _id: req.params.id, name: req.body.name }, user: req.user || null });
   }
 };

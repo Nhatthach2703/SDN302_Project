@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 exports.getAllProducts = async (req, res) => {
     try {
         const products = await Product.find().populate('category', 'name');
-        res.render('products/listadmin', { products });
+        res.render('products/listadmin', { products, user: req.user || null });
     } catch (error) {
         res.status(500).send('Server error');
     }
@@ -86,7 +86,7 @@ exports.getProductById = async (req, res) => {
 exports.getAddProductPage = async (req, res) => {
     try {
         const categories = await Category.find(); // Get category list
-        res.render('products/addadmin', { categories }); // Render EJS page
+        res.render('products/addadmin', { categories, user: req.user || null }); // Render EJS page
     } catch (error) {
         console.error("Error loading add product page:", error);
         res.status(500).send("Error loading add product page");
@@ -115,20 +115,20 @@ exports.getEditProductPage = async (req, res) => {
         const { id } = req.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).render("products/editadmin", { error: "Invalid product ID", product: null, categories: [] });
+            return res.status(400).render("products/editadmin", { error: "Invalid product ID", product: null, categories: [], user: req.user || null });
         }
 
         const product = await Product.findById(id).populate("category", "name");
 
         if (!product) {
-            return res.status(404).render("products/editadmin", { error: "Product not found", product: null, categories: [] });
+            return res.status(404).render("products/editadmin", { error: "Product not found", product: null, categories: [], user: req.user || null });
         }
 
         const categories = await Category.find();
-        res.render("products/editadmin", { product, categories, error: null }); // Pass error = null to avoid issues
+        res.render("products/editadmin", { product, categories, error: null, user: req.user || null }); // Pass error = null to avoid issues
     } catch (error) {
         console.error("Error retrieving product:", error);
-        res.status(500).render("products/editadmin", { error: "Server error", product: null, categories: [] });
+        res.status(500).render("products/editadmin", { error: "Server error", product: null, categories: [], user: req.user || null });
     }
 };
 
@@ -143,6 +143,7 @@ exports.updateProduct = async (req, res) => {
                 error: "Invalid product ID",
                 product: null,
                 categories: await Category.find(), // Load product categories
+                user: req.user || null
             });
         }
 
@@ -155,6 +156,7 @@ exports.updateProduct = async (req, res) => {
                 error: "Please fill in all required product details",
                 product: { _id: id, name, category, price, stock, image, description, petDetails },
                 categories: await Category.find(),
+                user: req.user || null
             });
         }
 
@@ -171,6 +173,7 @@ exports.updateProduct = async (req, res) => {
                 error: "Product not found",
                 product: null,
                 categories: await Category.find(),
+                user: req.user || null
             });
         }
 
@@ -183,6 +186,7 @@ exports.updateProduct = async (req, res) => {
             error: "Server error, please try again!",
             product: null,
             categories: await Category.find(),
+            user: req.user || null
         });
     }
 };
