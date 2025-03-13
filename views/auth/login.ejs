@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../partials/head') %>
+    <title>Login - PetStore</title>
+    <!-- Thêm Font Awesome nếu chưa có -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  </head>
+  <body>
+    <%- include('../partials/navbar') %>
+    <div class="login-page">
+      <div class="form">
+        <form action="/auth/login" class="login-form" method="post">
+          <input
+            type="email"
+            placeholder="Email"
+            id="email"
+            name="email"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            id="password"
+            name="password"
+            required
+          />
+          <button type="submit" style="background: #7b4a9e">Login</button>
+          <% if (error) { %>
+            <div style="color: red; font-size: 16px"><%= error %></div>
+          <% } %>
+          <p class="message">
+            Don't have an account?
+            <a style="color: #7b4a9e" href="/auth/register">Register</a>
+          </p>
+          <hr />
+        </form>
+
+        <!-- Đăng nhập bằng Google -->
+        <button style="background: #4285f4; margin-bottom: 10px">
+          <i class="fab fa-google" style="font-size: 20px; margin-right: 5px"></i>
+          <a class="text-decoration-none text-white" href="/auth/google">Login with Google</a>
+        </button>
+
+        <!-- Đăng nhập bằng Facebook -->
+        <button style="background: #3b5998">
+          <i class="fab fa-facebook-square" style="font-size: 20px; margin-right: 5px"></i>
+          <a class="text-decoration-none text-white" href="/auth/facebook">Login with Facebook</a>
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

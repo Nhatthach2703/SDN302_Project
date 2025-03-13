@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../partials/head') %>
+    <title>Register - PetStore</title>
+  </head>
+  <body>
+    <%- include('../partials/navbar') %>
+
+    <div class="login-page">
+      <div class="form">
+        <form action="/auth/register" class="register-form" method="post">
+          <% if (error) { %>
+            <div style="color: red; margin-bottom: 10px;"><%= error %></div>
+          <% } %>
+
+          <input
+            type="text"
+            placeholder="Tên người dùng"
+            id="userName"
+            name="username"
+            value="<%= oldInput.username || '' %>"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Họ và tên"
+            id="name"
+            name="name"
+            value="<%= oldInput.name || '' %>"
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            id="email"
+            name="email"
+            value="<%= oldInput.email || '' %>"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Mật khẩu"
+            id="password"
+            name="password"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Nhập lại mật khẩu"
+            id="rePassword"
+            name="rePassword"
+            required
+          />
+          <button type="submit" style="background: #7b4a9e">Đăng ký</button>
+
+          <p class="message">
+            Already have an account?
+            <a style="color: #7b4a9e" href="/auth/login">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
