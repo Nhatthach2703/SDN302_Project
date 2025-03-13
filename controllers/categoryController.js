@@ -78,7 +78,7 @@ exports.deleteCategory = async (req, res) => {
       return res.status(404).json({ message: 'Category not found' });
     }
     // res.status(200).json({ message: 'Category deleted successfully' });
-    res.redirect('/categories');
+    res.redirect('/categories/admin');
   } catch (error) {
     res.status(500).json({ message: "Invalid ID format", error: error.message });
   }
@@ -101,7 +101,7 @@ exports.postAddCategory = async (req, res) => {
     const newCategory = new Category({ name });
     await newCategory.save();
 
-    res.redirect('/categories');
+    res.redirect('/categories/admin');
   } catch (error) {
     res.render('categories/create', { error: 'Name must be at least 2 characters and cannot exceed 50 characters' });
   }
@@ -131,7 +131,7 @@ exports.editCategory = async (req, res) => {
 
     await Category.findByIdAndUpdate(req.params.id, { name, updatedAt: Date.now() });
 
-    res.redirect('/categories');
+    res.redirect('/categories/admin');
   } catch (error) {
     res.render('categories/edit', { error: 'A problem occurs when edit Category', category: { _id: req.params.id, name: req.body.name } });
   }

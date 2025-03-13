@@ -1,12 +1,12 @@
 const express = require('express');
 const productController = require('../controllers/ProductController');
 const router = express.Router();
-router.post('/create', productController.createProduct);
-router.get('/create', productController.getAddProductPage);
-router.get('/', productController.getAllProducts);
-router.get('/edit/:id', productController.getEditProductPage);
-router.put('/edit/:id', productController.updateProduct);
-router.delete('/:id', productController.deleteProduct);
+router.post('/create/admin', productController.createProduct);
+router.get('/create/admin', productController.getAddProductPage);
+router.get('/admin', productController.getAllProducts);
+router.get('/edit/:id/admin', productController.getEditProductPage);
+router.put('/edit/:id/admin', productController.updateProduct);
+router.delete('/:id/admin', productController.deleteProduct);
 router.get('/search', productController.searchProducts); // API tìm kiếm
 router.get('/suggestion', productController.suggestProducts); // API gợi ý
 router.get('/search-page', productController.getSearchPage); // Trang tìm kiếm
