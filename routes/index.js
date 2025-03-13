@@ -1,13 +1,9 @@
 var express = require('express');
 var router = express.Router();
-
+const inxexController = require('../controllers/indexController');
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  try {
-    res.render('pages/home');
-  } catch (error) {
-    console.log(error);
-  }
-});
+router.get('/', inxexController.getAllProducts);
+
+
 
 module.exports = router;

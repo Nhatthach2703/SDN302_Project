@@ -7,10 +7,11 @@ const userSchema = new Schema({
   password: { type: String },
   role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  email: { type: String, sparse: true, unique: true },
   phoneNumber: { type: String },
   address: { type: String },
   facebookId: { type: String, unique: true, sparse: true },
+  googleId: { type: String, unique: true, sparse: true }, // Thêm trường googleId
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
