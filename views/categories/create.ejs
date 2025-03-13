@@ -5,12 +5,12 @@
         <div class="alert alert-danger"><%= error %></div>
     <% } %>
 
-    <form action="/categories/create" method="POST">
+    <form action="/categories/create/admin" method="POST">
         <div class="mb-3">
             <label for="name" class="form-label">Category Name</label>
             <input type="text" class="form-control" id="name" name="name" required>
         </div>
         <button type="submit" class="btn btn-success">Add</button>
-        <a href="/categories" class="btn btn-secondary">Back</a>
+        <a href="/categories/admin" class="btn btn-secondary">Back</a>
     </form>
 </div>

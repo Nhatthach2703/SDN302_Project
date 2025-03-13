@@ -3,12 +3,12 @@ const router = express.Router();
 const categoryController = require('../controllers/categoryController');
 
 // Định nghĩa các route CRUD
-router.get('/', categoryController.getAllCategories);
-router.get('/create', categoryController.getAddCategory);
-router.post('/create', categoryController.postAddCategory);
-router.get('/:id', categoryController.getCategoryById);
-router.get('/edit/:id', categoryController.getEditCategory);
-router.put('/edit/:id', categoryController.editCategory);
-router.delete('/:id', categoryController.deleteCategory);
+router.get('/admin', categoryController.getAllCategories);
+router.get('/create/admin', categoryController.getAddCategory);
+router.post('/create/admin', categoryController.postAddCategory);
+router.get('/:id/admin', categoryController.getCategoryById);
+router.get('/edit/:id/admin', categoryController.getEditCategory);
+router.put('/edit/:id/admin', categoryController.editCategory);
+router.delete('/:id/admin', categoryController.deleteCategory);
 
 module.exports = router;

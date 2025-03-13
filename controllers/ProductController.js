@@ -107,7 +107,7 @@ exports.createProduct = async (req, res) => {
         const newProduct = new Product({ name, category, type, price, stock, image, description, petDetails });
         await newProduct.save();
 
-        res.redirect('/products'); // Redirect to product list
+        res.redirect('/products/admin'); // Redirect to product list
     } catch (error) {
         res.status(500).send('Server error while adding product');
     }
@@ -179,7 +179,7 @@ exports.updateProduct = async (req, res) => {
         }
 
         // Redirect to product list after successful update
-        res.redirect("/products");
+        res.redirect("/products/admin");
 
     } catch (error) {
         console.error("Error updating product:", error);
@@ -196,7 +196,7 @@ exports.deleteProduct = async (req, res) => {
     try {
         const deletedProduct = await Product.findByIdAndDelete(req.params.id);
         if (!deletedProduct) return res.status(404).json({ message: 'Product not found' });
-        res.redirect('/products');
+        res.redirect('/products/admin');
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }

@@ -1,7 +1,7 @@
 <div class="container">
     <h1 class="text-center mb-4">📦 Product List</h1>
 
-    <a href="/products/create" class="btn-add">➕ Add Product</a>
+    <a href="/products/create/admin" class="btn-add">➕ Add Product</a>
 
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
@@ -49,8 +49,8 @@
                         <%= product.description || 'No description' %>
                     </td>
                     <td>
-                        <a href="/products/edit/<%= product.id %>" class="btn btn-edit btn-sm">✏ Edit</a>
-                        <form action="/products/<%= product.id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <a href="/products/edit/<%= product.id %>/admin" class="btn btn-edit btn-sm">✏ Edit</a>
+                        <form action="/products/<%= product.id %>/admin?_method=DELETE" method="POST" style="display:inline;">
                             <button type="submit" class="btn btn-delete btn-sm"
                                 onclick="return confirm('Are you sure you want to delete this product?')">🗑
                                 Delete</button>
