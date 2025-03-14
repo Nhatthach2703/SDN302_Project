@@ -64,6 +64,10 @@ const login = (req, res, next) => {
     }
     const token = jwt.sign({ id: user._id, role: user.role, name: user.name}, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.cookie('token', token, { httpOnly: true });
+    if (user.role === 'admin') {
+      // return res.render('pages/homeAdmin', { user });
+      return res.redirect('/admin');
+    }
     res.redirect('/'); // Chuyển về trang chủ
   })(req, res, next);
 };
