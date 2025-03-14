@@ -39,22 +39,27 @@
         --bs-btn-disabled-color: #7b4a9e;
         --bs-btn-disabled-border-color: #7b4a9e;
       }
-  
+
       .top-nav {
         background-color: #7b4a9e;
         color: white;
         padding: 0.5rem 1rem;
       }
-  
+
       .top-nav .navbar-nav {
         flex-direction: row;
         align-items: center;
       }
-  
+
       .top-nav .nav-item {
         margin-right: 20px;
       }
-  
+      .cart{
+            color: black;
+            text-decoration: none;
+            list-style: none;
+        }
+
       .search-form {
         max-width: 500px;
         width: 100%;
@@ -66,7 +71,7 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         position: relative;
       }
-  
+
       .search-form .form-control {
         border: none;
         border-radius: 8px 0 0 8px;
@@ -74,7 +79,7 @@
         padding: 0.5rem 1rem;
         box-shadow: none;
       }
-  
+
       .search-form .btn {
         border-radius: 0 8px 8px 0;
         padding: 0 1rem;
@@ -82,7 +87,7 @@
         border: none;
         color: white;
       }
-  
+
       #suggestionBoxForService {
         position: absolute;
         top: 100%;
@@ -95,13 +100,13 @@
         /* Giúp hiển thị đè lên các phần tử khác */
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       }
-  
+
       #suggestionBoxForService div {
         padding: 10px;
         cursor: pointer;
         border-bottom: 1px solid #ddd;
       }
-  
+
       #suggestionBoxForService div:hover {
         background-color: #f8f9fa;
       }
@@ -172,9 +177,21 @@
                   Pets
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Dogs</a></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="/products?category=67cfb5625b64caf653f70ebc&page=1"
+                      >Dogs</a
+                    >
+                  </li>
                   <li><hr class="dropdown-divider" /></li>
-                  <li><a class="dropdown-item" href="#">Cats</a></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="/products?category=67cfb5695b64caf653f70ebe&page=1"
+                      >Cats</a
+                    >
+                  </li>
                 </ul>
               </li>
               <li class="nav-item dropdown">
@@ -188,13 +205,29 @@
                   Pet Products
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Dog Food</a></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="/products?category=67cfb5a25b64caf653f70ec0&page=1"
+                      >Accessories</a
+                    >
+                  </li>
                   <li><hr class="dropdown-divider" /></li>
-                  <li><a class="dropdown-item" href="#">Cat Food</a></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="/products?category=67cff3f4a92e227c8ffbaf50&page=1"
+                      >Food&Drinks</a
+                    >
+                  </li>
                   <li><hr class="dropdown-divider" /></li>
-                  <li><a class="dropdown-item" href="#">Accessories</a></li>
-                  <li><hr class="dropdown-divider" /></li>
-                  <li><a class="dropdown-item" href="#">Other Services</a></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="/products?category=67d16c6b20ed33fab00ec9ed&page=1"
+                      >Other Services</a
+                    >
+                  </li>
                 </ul>
               </li>
             </ul>
@@ -237,8 +270,11 @@
             <!-- Logic hiển thị Login hoặc User Dropdown -->
             <div class="d-flex align-items-center gap-3">
               <% if(!user) {%>
+              <a class = "btn btn-outline-success" href="/auth/register">Register</a>
               <a class="btn btn-outline-success" href="/auth/login">Login</a>
               <% } else {%>
+              <i class="fas fa-shopping-cart"></i>
+              <a class="cart me-3" href="#">Cart</a>
               <div class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -281,8 +317,10 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const searchInput = document.getElementById("search");
-        const suggestionBox = document.getElementById("suggestionBoxForService");
-  
+        const suggestionBox = document.getElementById(
+          "suggestionBoxForService"
+        );
+
         function searchProduct() {
           let keyword = searchInput.value.trim();
           if (!keyword) {
@@ -292,14 +330,14 @@
           window.location.href =
             "/products/search?keyword=" + encodeURIComponent(keyword);
         }
-  
+
         function handleSearch(event) {
           if (event.key === "Enter") {
             event.preventDefault();
             searchProduct();
           }
         }
-  
+
         let timeout = null;
         function handleInput() {
           clearTimeout(timeout);
@@ -309,7 +347,7 @@
               suggestionBox.style.display = "none";
               return;
             }
-  
+
             fetch(`/products/suggestion?keyword=${encodeURIComponent(keyword)}`)
               .then((response) => response.json())
               .then((suggestions) => displaySuggestions(suggestions))
@@ -318,14 +356,14 @@
               );
           }, 300);
         }
-  
+
         function displaySuggestions(suggestions) {
           suggestionBox.innerHTML = "";
           if (suggestions.length === 0) {
             suggestionBox.style.display = "none";
             return;
           }
-  
+
           suggestions.forEach((product) => {
             let suggestion = document.createElement("div");
             suggestion.innerText = `${product.name} - ${product.type}`;
@@ -337,10 +375,10 @@
             };
             suggestionBox.appendChild(suggestion);
           });
-  
+
           suggestionBox.style.display = "block";
         }
-  
+
         searchInput.addEventListener("input", handleInput);
         searchInput.addEventListener("keyup", handleSearch);
       });

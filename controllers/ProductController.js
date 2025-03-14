@@ -11,6 +11,56 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
+
+exports.getProductsByCategory = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 8;
+        const categoryId = req.query.category;
+
+        const skip = (page - 1) * limit;
+
+        const filter = categoryId ? { category: categoryId } : {};
+
+        const totalProducts = await Product.countDocuments(filter);
+
+        if (totalProducts === 0) {
+            return res.render('products/listuser', {
+                products: [],
+                user: req.user || null,
+                currentPage: page,
+                totalPages: 0,
+                totalProducts: 0,
+                limit,
+                categoryId
+            });
+        }
+
+        const products = await Product.find(filter)
+            .populate('category', 'name')
+            .skip(skip)
+            .limit(limit)
+            .sort({ createdAt: -1 });
+
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        const paginationData = {
+            products,
+            user: req.user || null,
+            currentPage: page,
+            totalPages,
+            totalProducts,
+            limit,
+            categoryId
+        };
+
+        res.render('products/listuser', paginationData);
+    } catch (error) {
+        console.error('Error fetching products:', error.message);
+        res.status(500).send('Server error');
+    }
+};
+
 // Hàm tạo query lọc theo tên
 const filterByName = (keyword) => ({
     name: { $regex: new RegExp(keyword, 'i') }
@@ -40,6 +90,70 @@ exports.searchProducts = async (req, res) => {
         console.error('Error searching products:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
+};
+
+// Lấy thông tin chi tiết sản phẩm user
+exports.getProductDetail = async (req, res) => {
+  try {
+    // Lấy ID sản phẩm từ query
+    const productId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).send('Invalid product ID');
+    }
+
+    // Lấy thông tin sản phẩm hiện tại và populate category
+    const product = await Product.findById(productId).populate('category', 'name');
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+
+    // Các ID của danh mục Dog và Cat
+    const dogCategoryId = '67cfb5625b64caf653f70ebc';
+    const catCategoryId = '67cfb5695b64caf653f70ebe';
+    const accessoryCategoryId = '67cfb5a25b64caf653f70ec0';
+    const foodDrinksCategoryId = '67cff3f4a92e227c8ffbaf50';
+    const otherServiceCategoryId = '67cff3f5a92e227c8ffbaf51'; // Giả định
+
+    // Xác định danh mục hiện tại
+    const currentCategoryId = product.category._id.toString();
+    let relatedProducts = [];
+
+    // Logic lấy sản phẩm liên quan
+    if (currentCategoryId === dogCategoryId || currentCategoryId === catCategoryId) {
+      // Nếu đang xem Dog hoặc Cat, lấy sản phẩm từ cùng danh mục
+      relatedProducts = await Product.find({
+        category: currentCategoryId,
+        _id: { $ne: productId } // Không lấy sản phẩm đang xem
+      })
+        .populate('category', 'name')
+        .limit(4); // Giới hạn 4 sản phẩm
+    } else if (
+      currentCategoryId === accessoryCategoryId ||
+      currentCategoryId === foodDrinksCategoryId ||
+      currentCategoryId === otherServiceCategoryId
+    ) {
+      // Nếu đang xem Accessory, Food & Drinks, hoặc Other Service, lấy sản phẩm từ Dog và Cat
+      relatedProducts = await Product.find({
+        category: { $in: [dogCategoryId, catCategoryId] },
+        _id: { $ne: productId }
+      })
+        .populate('category', 'name')
+        .limit(4); // Giới hạn 4 sản phẩm
+    }
+
+    // Dữ liệu truyền vào template
+    const data = {
+      product,
+      relatedProducts,
+      user: req.user || null 
+    };
+
+    // Render template
+    res.render('products/detailuser', data);
+  } catch (error) {
+    console.error('Error fetching product detail:', error);
+    res.status(500).send('Server error');
+  }
 };
 
 // Gợi ý sản phẩm
@@ -76,7 +190,7 @@ exports.getProductById = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id).populate('category', 'name');
         if (!product) return res.status(404).json({ message: 'Product not found' });
-        res.status(200).json(product);
+        res.render('products/detailuser', { product, user: req.user || null });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
