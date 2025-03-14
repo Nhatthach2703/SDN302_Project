@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Pet Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <style>
+        /* CSS giữ nguyên như trong file gốc */
+        .top-nav {
+            background-color: #7b4a9e;
+            color: white;
+        }
+        .fixednavbar {
+            display: flex;
+            position: fixed;
+            width: 100%;
+            flex-direction: column;
+            z-index: 3;
+        }
+        .cart {
+            color: black;
+            text-decoration: none;
+            list-style: none;
+        }
+        .footer {
+            background: #7b4a9e;
+        }
+        .bg-section {
+            background-color: #f8f8f8;
+        }
+        img {
+            max-width: 100%;
+            vertical-align: middle;
+            display: inline-block;
+        }
+        .name-product {
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-family: "Varela Round", sans-serif;
+            font-size: 40px;
+            line-height: 48px;
+            font-weight: 400;
+        }
+        .description-detail {
+            margin-bottom: 28px;
+            font-size: 14px;
+            line-height: 24px;
+        }
+        .price {
+            margin-bottom: 32px;
+            font-family: "Varela Round", sans-serif;
+            color: #7b4a9e;
+            font-size: 24px;
+            line-height: 32px;
+            font-weight: 400;
+        }
+        .quantity {
+            width: 80px;
+            margin-right: 8px;
+            margin-bottom: 12px;
+            height: 48px;
+            padding-right: 28px;
+            padding-left: 28px;
+            border-style: solid;
+            border-width: 2px;
+            border-top-color: #e5e5e5;
+            border-right-color: #e5e5e5;
+            border-bottom-color: #e5e5e5;
+            border-left-color: #e5e5e5;
+            border-radius: 24px;
+            background-color: #f8f8f8;
+            transition-property: border-color, background-color;
+            transition-duration: 300ms, 300ms;
+            transition-timing-function: ease, ease;
+        }
+        .add-to-cart {
+            margin-right: 8px;
+            margin-bottom: 12px;
+            height: 48px;
+            padding: 12px 28px;
+            justify-content: center;
+            border-radius: 24px;
+            background-color: #7b4a9e;
+            transition-property: transform, box-shadow;
+            transition-duration: 300ms, 300ms;
+            transition-timing-function: ease, ease;
+            color: white;
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            border: #7b4a9e;
+        }
+        .add-to-cart:hover {
+            box-shadow: rgba(165, 201, 38, 0.5) 0px 8px 8px -4px;
+            transform: scale(1.05);
+        }
+        .buy-now {
+            margin-top: 0px;
+            background-color: transparent;
+            box-shadow: inset 0 0 0 2px #e5e5e5;
+            color: #111;
+            height: 48px;
+            padding: 12px 28px;
+            justify-content: center;
+            border-radius: 24px;
+            transition-property: transform, box-shadow;
+            transition-duration: 300ms, 300ms;
+            transition-timing-function: ease, ease;
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 600;
+            align-items: center;
+            display: flex;
+            border: none;
+            text-decoration: none;
+        }
+        .sku {
+            font-size: 16px;
+            line-height: 16px;
+            text-transform: uppercase;
+        }
+        .sku-content {
+            font-size: 16px;
+            line-height: 16px;
+            margin-left: 4px;
+        }
+        .shop-header-line {
+            width: 100%;
+            height: 2px;
+            margin-top: 32px;
+            background-color: #e5e5e5;
+            padding: 0;
+        }
+        .shop-header-color-green {
+            background-color: #7b4a9e;
+            width: 136px;
+            height: 100%;
+            padding: 0;
+        }
+        .table-radius {
+            border-style: solid;
+            border-width: 2px;
+            border-top-color: #e5e5e5;
+            border-right-color: #e5e5e5;
+            border-bottom-color: #e5e5e5;
+            border-left-color: #e5e5e5;
+            border-radius: 15px;
+            padding: 16px 32px;
+            height: 214px;
+        }
+        .product-description {
+            margin-top: 0px;
+            margin-bottom: 16px;
+            font-family: "Varela Round", sans-serif;
+            font-size: 24px;
+            line-height: 32px;
+            font-weight: 400;
+        }
+        .see-more {
+            color: #7b4a9e;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .see-more:hover {
+            color: #6a3f88;
+        }
+        .see-more i {
+            margin-left: 5px;
+        }
+        h3 {
+            margin-top: 0px;
+            margin-bottom: 16px;
+            font-family: "Varela Round", sans-serif;
+            font-size: 28px;
+            line-height: 36px;
+            font-weight: 400;
+        }
+        .link.arrow-link {
+            margin-top: 4px;
+            padding-right: 20px;
+            background-image: url(https://uploads-ssl.webflow.com/65a4f1a…/65a4f1a…_arrow-right-mini-icon.svg);
+            background-position: 100% 50%;
+            background-size: 11px;
+            background-repeat: no-repeat;
+        }
+        .link.-wfp-hover, .link:hover {
+            border-bottom-color: #7b4a9e;
+        }
+        .product-card-price {
+            height: 24px;
+            padding: 2px 12px;
+            border-radius: 16px;
+            background-color: #7b4a9e;
+            color: white;
+            font-size: 12px;
+            line-height: 20px;
+            font-weight: 400;
+        }
+        .product-card {
+            display: flex;
+            width: 100%;
+            padding: 24px 24px 32px;
+            flex-direction: column;
+            align-items: center;
+            flex: 1 1 0%;
+            border-radius: 16px;
+            background-color: white;
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 2px 0px;
+            transition-property: transform, box-shadow;
+            transition-duration: 300ms, 300ms;
+            transition-timing-function: ease, ease;
+            text-align: center;
+            text-decoration: none;
+        }
+        .subscribe-input {
+            margin-right: 16px;
+            margin-bottom: 0px;
+            border-radius: 24px;
+            padding: 8px 12px;
+            height: 48px;
+            padding-right: 28px;
+            padding-left: 28px;
+            border-style: solid;
+            border-width: 2px;
+            border-top-color: #e5e5e5;
+            border-right-color: #e5e5e5;
+            border-bottom-color: #e5e5e5;
+            border-left-color: #e5e5e5;
+            border-radius: 24px;
+            background-color: #f8f8f8;
+            transition-property: border-color, background-color;
+            transition-duration: 300ms, 300ms;
+            transition-timing-function: ease, ease;
+        }
+        .button-subscribe {
+            height: 48px;
+            padding: 12px 28px;
+            justify-content: center;
+            border-radius: 24px;
+            background-color: #7b4a9e;
+            transition-property: transform, box-shadow;
+            transition-duration: 300ms, 300ms;
+            transition-timing-function: ease, ease;
+            color: white;
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 600;
+            text-align: center;
+            border: none;
+        }
+        .subscribe {
+            display: flex;
+            width: 100%;
+            padding: 48px;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px;
+            background-color: white;
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 2px 0px;
+        }
+        .subscribe-info {
+            display: flex;
+            padding-right: 15px;
+            align-items: center;
+            flex: 1 1 0%;
+        }
+        .subscribe-icon {
+            display: flex;
+            width: 64px;
+            height: 64px;
+            margin-right: 24px;
+            padding: 18px 16px 16px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: #7b4a9e;
+        }
+        h4 {
+            margin-top: 0px;
+            margin-bottom: 16px;
+            font-family: "Varela Round", sans-serif;
+            font-size: 24px;
+            line-height: 32px;
+            font-weight: 400;
+        }
+        .product-card.-wfp-hover, .product-card:hover {
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 20px -4px;
+            transform: scale(1.05) translate(0px, -2px);
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    
+    <div class="bg-section" style="padding-top: 10px;">
+        <div class="container-fluid col-8 mx-auto">
+            <div style="padding-top: 40px;">
+                <div style="background-color: #fff; border-radius: 16px; padding: 80px;">
+                    <div class="row">
+                        <div class="col-6">
+                            <h1 class="name-product"><%= product.name %></h1>
+                            <p style="font-size:18px">Price:</p>
+                            <p class="price"><%= product.price.toLocaleString('vi-VN') %> VND</p>
+                            <% if (product.stock > 0) { %>
+                                <div class="d-flex">
+                                    <form action="/addtocart" method="post">
+                                        <div>
+                                            <input type="number" class="quantity" value="1" id="quantity" name="quantity">
+                                        </div>
+                                        <div>
+                                            <input type="hidden" value="<%= product._id %>" id="productID" name="productID">
+                                        </div>
+                                        <div>
+                                            <input type="hidden" value="<%= product.category._id %>" id="catalogID" name="catalogID">
+                                        </div>
+                                        <div>
+                                            <button type="submit" class="add-to-cart text-decoration-none">Add to Cart</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            <% } else { %>
+                                <div class="d-flex" style="font-size: 32px; color: red">
+                                    Out of Stock
+                                </div>
+                            <% } %>
+                        </div>
+                        <div class="col-6">
+                            <img src="<%= product.image %>" alt="">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 80px;">
+                        <div class="d-flex justify-content-between" style="padding-left: 0;">
+                            <div>Product Information</div>
+                        </div>
+                        <div class="shop-header-line">
+                            <div class="shop-header-color-green"></div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 64px;">
+                        <div class="col-8" style="padding-left: 0; padding-right: 70px;">
+                            <div>
+                                <h4 class="product-description"><%= product.name %></h4>
+                                <p class="description-detail"><%= product.description %></p>
+                            </div>
+                        </div>
+                        <% if(product.category.name == 'Dog' ||  product.category.name == 'Cat' ) {%>
+                        <div class="col-4 table-radius">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Age</td>
+                                        <td><%= product.petDetails.age %> years</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Weight</td>
+                                        <td><%= product.petDetails.weight %> kg</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Character</td>
+                                        <td><%= product.petDetails.character %></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5">
+                <div class="row">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h3>Related Products</h3>
+                    <a href="/products?category=<%= product.category._id %>" class="see-more">See More <i class="fas fa-arrow-right"></i></a>
+                  </div>
+                  <div class="shop-header-line">
+                    <div class="shop-header-color-green"></div>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <% if (relatedProducts && relatedProducts.length > 0) { %>
+                    <% relatedProducts.forEach(related => { %>
+                      <div class="col-md-3">
+                        <a href="/products/<%= related._id %>" class="product-card">
+                          <img src="<%= related.image %>" alt="<%= related.name %>" class="img-fluid" style="max-height: 200px; object-fit: cover; color: black;">
+                          <h5 class="mt-2"><%= related.name %></h5>
+                          <p class="product-card-price"><%= related.price.toLocaleString('vi-VN') %> VND</p>
+                        </a>
+                      </div>
+                    <% }) %>
+                  <% } else { %>
+                    <p>No related products available.</p>
+                  <% } %>
+                </div>
+              </div>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>
