@@ -9,11 +9,13 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/authRouter');
 const categoriesRouter = require('./routes/categoriesRouter');
+const orderRouter = require('./routes/orderRoute')
 const productRouter = require('./routes/productRoutes');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const passport = require('./config/passport');
 const authenticateToken = require('./middleware/auth');
+const cartRouter = require('./routes/cartRouter')
 require('dotenv').config();
 
 var app = express();
@@ -41,11 +43,12 @@ connectDB();
 
 // Routes
 app.use('/', authenticateToken(false), indexRouter);
-app.use('/users',authenticateToken(true),  usersRouter); // Bảo vệ route
+app.use('/users', authenticateToken(true), usersRouter); // Bảo vệ route
 app.use('/auth', authenticateToken(false), authRouter);
-app.use('/categories',  categoriesRouter); // Bảo vệ route
-app.use('/products',  productRouter); // Bảo vệ route
-
+app.use('/categories', categoriesRouter); // Bảo vệ route
+app.use('/products', productRouter); // Bảo vệ route
+app.use('/orders', orderRouter);
+app.use('/carts', cartRouter)
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
