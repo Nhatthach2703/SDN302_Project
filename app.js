@@ -8,6 +8,7 @@ const connectDB = require('./config/database');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/authRouter');
+var adminRouter = require('./routes/adminRouter');
 const categoriesRouter = require('./routes/categoriesRouter');
 const orderRouter = require('./routes/orderRoute')
 const productRouter = require('./routes/productRoutes');
@@ -48,7 +49,9 @@ app.use('/auth', authenticateToken(false), authRouter);
 app.use('/categories', categoriesRouter); // Bảo vệ route
 app.use('/products', productRouter); // Bảo vệ route
 app.use('/orders', orderRouter);
-app.use('/carts', cartRouter)
+app.use('/carts', cartRouter);
+app.use('/admin', adminRouter);
+
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
