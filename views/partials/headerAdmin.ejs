@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidebar Mini Icon</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    /* Sidebar Styles */
+    .sidebar {
+      height: 100vh;
+      width: 60px; /* Mặc định thu nhỏ */
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #7b4a9e;
+      padding-top: 20px;
+      transition: width 0.3s;
+      color: white;
+      overflow: hidden;
+    }
+
+    /* Khi hover, sidebar mở rộng */
+    .sidebar:hover {
+      width: 250px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      white-space: nowrap;
+    }
+
+    /* Icon luôn hiển thị */
+    .sidebar a i {
+      width: 40px;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    /* Ẩn chữ khi sidebar thu nhỏ */
+    .sidebar span {
+      display: none;
+      transition: opacity 0.3s;
+    }
+
+    /* Hiển thị chữ khi hover */
+    .sidebar:hover span {
+      display: inline;
+      opacity: 1;
+    }
+
+    .sidebar a:hover {
+      background-color: #5a3476;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 60px;
+      transition: margin-left 0.3s;
+      padding: 20px;
+    }
+
+    /* Khi hover sidebar, nội dung dịch sang phải */
+    .sidebar:hover + .main-content {
+      margin-left: 250px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 8px; /* Khoảng cách giữa icon và chữ */
+        font-weight: bold;
+        padding: 12px 16px; /* Căn chỉnh giống các item sidebar */
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .user-info i {
+        font-size: 1.2rem; /* Căn chỉnh icon cho đồng đều */
+    }
+
+    .user-info span {
+        flex: 1;
+    }
+
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="/admin"><i class="fas fa-home"></i> <span>Home</span></a>
+    <a href="/products/admin"><i class="fas fa-dog"></i> <span>Products Manage</span></a>
+    <a href="/categories/admin"><i class="fas fa-cat"></i> <span>Categories Manage</span></a>
+    <!-- <a href="#"><i class="fas fa-bone"></i> <span>Food</span></a>
+    <a href="#"><i class="fas fa-tools"></i> <span>Accessories</span></a> -->
+    <!-- <a href="#"><i class="fas fa-user"></i> <span>Profile</span></a> -->
+    <hr>
+
+    <% if (!user) { %>
+    <a href="/auth/register"><i class="fas fa-user-plus"></i> <span>Register</span></a>
+    <a href="/auth/login"><i class="fas fa-sign-in-alt"></i> <span>Login</span></a>
+    <% } else { %>
+        <a href="#" class="user-info">
+            <i class="fas fa-user-circle"></i>
+            <span>Hello, <%= user.name %></span>
+        </a>
+    <a href="/auth/logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+    <% } %>
+  </div>
+
+</body>
+
+</html>
