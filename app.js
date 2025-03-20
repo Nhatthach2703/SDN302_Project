@@ -15,7 +15,7 @@ const productRouter = require('./routes/productRoutes');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const passport = require('./config/passport');
-const authenticateToken = require('./middleware/auth');
+const { authenticateToken } = require('./middleware/auth');
 const cartRouter = require('./routes/cartRouter')
 require('dotenv').config();
 
