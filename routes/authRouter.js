@@ -44,4 +44,10 @@ router.get(
 // Đăng xuất
 router.get("/logout", authController.logout);
 
+router.get('/forgot-password', authController.showForgotPasswordForm);
+router.post('/forgot-password', authController.handleForgotPassword);
+router.get('/reset-password/:token', authController.showResetPasswordForm);
+router.post('/reset-password/:token', authController.handleResetPassword);
+
+
 module.exports = router;

@@ -8,15 +8,32 @@ require('dotenv').config();
 // Local Strategy
 passport.use(
   new LocalStrategy(
-    { usernameField: 'email' },
-    async (email, password, done) => {
+    {
+      usernameField: 'email', // Vẫn giữ email là field chính, nhưng sẽ xử lý cả username
+      passwordField: 'password',
+    },
+    async (emailOrUsername, password, done) => {
       try {
-        const user = await User.findOne({ email });
-        if (!user || !user.password)
-          return done(null, false, { message: 'Incorrect email or password' });
+        // Tìm user bằng email hoặc username
+        const user = await User.findOne({
+          $or: [
+            { email: emailOrUsername },
+            { username: emailOrUsername }
+          ]
+        });
+
+        // Nếu không tìm thấy user hoặc user không có password
+        if (!user || !user.password) {
+          return done(null, false, { message: 'Incorrect email/username or password' });
+        }
+
+        // So sánh mật khẩu
         const isMatch = await user.comparePassword(password);
-        if (!isMatch)
-          return done(null, false, { message: 'Incorrect email or password' });
+        if (!isMatch) {
+          return done(null, false, { message: 'Incorrect email/username or password' });
+        }
+
+        // Đăng nhập thành công
         return done(null, user);
       } catch (err) {
         return done(err);

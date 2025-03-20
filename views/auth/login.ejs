@@ -4,7 +4,124 @@
     <%- include('../partials/head') %>
     <title>Login - PetStore</title>
     <!-- Thêm Font Awesome nếu chưa có -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+      .login-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 150px); /* Subtract navbar and footer height */
+        background-color: #f8f9fa;
+        padding-top: 60px; /* Avoid overlap with fixed navbar */
+      }
+
+      .form {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .login-form input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 2px solid #e5e5e5;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .login-form input:focus {
+        border-color: #7b4a9e;
+        outline: none;
+        box-shadow: 0 0 5px rgba(123, 74, 158, 0.5);
+      }
+
+      .login-form button {
+        width: 100%;
+        padding: 12px;
+        background: #7b4a9e;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-form button:hover {
+        background: #6a3f88;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .message a,
+      .forgot-password a {
+        color: #7b4a9e;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .message a:hover,
+      .forgot-password a:hover {
+        color: #6a3f88;
+        text-decoration: underline;
+      }
+
+      .social-button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .social-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .social-button.google {
+        background: #4285f4;
+      }
+
+      .social-button.facebook {
+        background: #3b5998;
+      }
+
+      .error {
+        color: red;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      hr {
+        margin: 20px 0;
+        border: 0;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      .forgot-password {
+        text-align: right;
+        margin-bottom: 10px;
+      }
+    </style>
   </head>
   <body>
     <%- include('../partials/navbar') %>
@@ -12,8 +129,8 @@
       <div class="form">
         <form action="/auth/login" class="login-form" method="post">
           <input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Email or Username" 
             id="email"
             name="email"
             required
@@ -25,28 +142,31 @@
             name="password"
             required
           />
-          <button type="submit" style="background: #7b4a9e">Login</button>
+          <div class="forgot-password">
+            <a href="/auth/forgot-password">Forgot Password?</a>
+          </div>
+          <button type="submit">Login</button>
           <% if (error) { %>
-            <div style="color: red; font-size: 16px"><%= error %></div>
+            <div class="error"><%= error %></div>
           <% } %>
           <p class="message">
             Don't have an account?
-            <a style="color: #7b4a9e" href="/auth/register">Register</a>
+            <a href="/auth/register">Register</a>
           </p>
           <hr />
         </form>
 
         <!-- Đăng nhập bằng Google -->
-        <button style="background: #4285f4; margin-bottom: 10px">
+        <a href="/auth/google" class="social-button google">
           <i class="fab fa-google" style="font-size: 20px; margin-right: 5px"></i>
-          <a class="text-decoration-none text-white" href="/auth/google">Login with Google</a>
-        </button>
+          Login with Google
+        </a>
 
         <!-- Đăng nhập bằng Facebook -->
-        <button style="background: #3b5998">
+        <a href="/auth/facebook" class="social-button facebook">
           <i class="fab fa-facebook-square" style="font-size: 20px; margin-right: 5px"></i>
-          <a class="text-decoration-none text-white" href="/auth/facebook">Login with Facebook</a>
-        </button>
+          Login with Facebook
+        </a>
       </div>
     </div>
   </body>
