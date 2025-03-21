@@ -124,3 +124,16 @@ exports.deleteOrder = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.viewAllOrders = async (req, res) => {
+    try {
+      const orders = await Order.find()
+        .populate('user', 'name email')
+        .populate('items.product', 'name price');
+  
+      res.render('admin/viewOrders', { orders, user: req.user || null });
+    } catch (error) {
+      res.status(500).send('Server Error');
+    }
+  };
+
