@@ -1,6 +1,6 @@
 const Order = require('../models/orderModel');
 
-
+const Product = require('../models/productModel');
 exports.createOrder = async (req, res) => {
     try {
         const { user, items, total, paymentMethod, shippingMethod, deliveryDate } = req.body;
@@ -40,6 +40,33 @@ exports.getOrders = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.checkout = async (req, res) => {
+    try {
+        let { productIds } = req.body;
+
+        if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
+            return res.status(400).send("Danh sách sản phẩm không hợp lệ.");
+        }
+
+        // Loại bỏ khoảng trắng dư thừa
+        productIds = productIds.map(id => id.trim());
+
+        // Tìm tất cả sản phẩm theo danh sách ID
+        const products = await Product.find({ _id: { $in: productIds } });
+
+        if (products.length === 0) {
+            return res.status(400).send("Không tìm thấy sản phẩm nào.");
+        }
+
+        res.render('users/order', { products, user: req.user || null });
+    } catch (error) {
+        console.error("Lỗi khi checkout:", error);
+        res.status(500).send("Lỗi server, vui lòng thử lại.");
+    }
+};
+
+
 
 
 exports.getOrderById = async (req, res) => {

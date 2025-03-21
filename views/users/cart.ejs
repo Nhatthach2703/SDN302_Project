@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
+
+    body {
+        font-family: 'Manrope', sans-serif;
+        background: #eee;
+    }
+
+    .size span {
+        font-size: 11px;
+    }
+
+    .color span {
+        font-size: 11px;
+    }
+
+    .product-deta {
+        margin-right: 70px;
+    }
+
+    .gift-card:focus {
+        box-shadow: none;
+    }
+
+    .pay-button {
+        color: #fff;
+    }
+
+    .pay-button:hover {
+        color: #fff;
+    }
+
+    .pay-button:focus {
+        color: #fff;
+        box-shadow: none;
+    }
+
+    .text-grey {
+        color: #a39f9f;
+    }
+
+    .qty i {
+        font-size: 11px;
+    }
+</style>
+
+<body>
+    <%- include('../partials/header') %>
+        <div class="container mt-5 mb-5">
+            <div class="d-flex justify-content-center row">
+                <div class="col-md-8">
+                    <div class="p-2">
+                        <h4>Pet cart</h4>
+                    </div>
+                    <form action="/orders/checkout" method="post">
+                        <% if (cart && cart.items.length> 0) { %>
+                            <% cart.items.forEach(item=> { %>
+                                <div class="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded cart-item"
+                                    data-product-id="<%= item.product._id %>">
+                                    <input type="hidden" name="productIds[]" value=" <%=item.product.id %>">
+                                    <div class="mr-1">
+                                        <img class="rounded"
+                                            src="<%= item.product.image ? item.product.image : 'https://via.placeholder.com/70' %>"
+                                            width="70">
+                                    </div>
+                                    <div class="d-flex flex-column align-items-center product-details">
+                                        <span class="font-weight-bold">
+                                            <%= item.product.name %>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex flex-row align-items-center qty">
+                                        <i class="fa fa-minus text-danger qty-adjust decrease"></i>
+                                        <h5 class="text-grey mt-1 mx-2 quantity">
+                                            <%= item.quantity %>
+                                        </h5>
+                                        <i class="fa fa-plus text-success qty-adjust increase"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-grey product-price" data-unit-price="<%= item.price %>">$<%=
+                                                (item.quantity * item.price).toFixed(2) %>
+                                        </h5>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fa fa-trash mb-1 text-danger"
+                                            onclick="removeFromCart('<%= item.product._id %>')"></i>
+                                    </div>
+                                </div>
+
+                                <% }) %>
+                                    <div class="d-flex flex-row align-items-center mt-3 p-2 bg-white rounded">
+                                        <button class="btn btn-warning btn-block btn-lg ml-2 pay-button" type="submit">
+                                            Proceed to Pay
+                                        </button>
+                                    </div>
+                    </form>
+                    <% } else { %>
+                        <p class="text-center mt-4">Giỏ hàng trống.</p>
+                        <% } %>
+
+
+
+                </div>
+            </div>
+        </div>
+        <%- include('../partials/footer') %>
+</body>
+<script>
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".qty-adjust").forEach(button => {
+            button.addEventListener("click", function () {
+                const isIncrease = this.classList.contains("increase");
+                const cartItem = this.closest(".cart-item");
+                const quantityElement = cartItem.querySelector(".quantity");
+                const priceElement = cartItem.querySelector(".product-price");
+                const totalElement = document.getElementById("cart-total");
+
+                let quantity = parseInt(quantityElement.innerText, 10);
+                let productId = cartItem.dataset.productId;
+                let price = parseFloat(priceElement.dataset.unitPrice);
+
+                if (isIncrease) {
+                    quantity++;
+                } else {
+                    if (quantity > 1) {
+                        quantity--;
+                    } else {
+                        return;
+                    }
+                }
+
+                quantityElement.innerText = quantity;
+
+                let newTotal = (quantity * price).toFixed(2);
+                priceElement.innerText = `$${newTotal}`;
+
+                updateCart(productId, quantity);
+            });
+        });
+    });
+
+    // Hàm gửi request cập nhật giỏ hàng
+    function updateCart(productId, quantity) {
+        const userId = "<%= user._id %>";
+        fetch("/carts/update", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, productId, quantity })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Cart updated successfully!");
+                } else {
+                    console.error("Error updating cart:", data.error);
+                }
+            })
+            .catch(error => console.error("Fetch error:", error));
+    }
+
+
+
+    function removeFromCart(productId) {
+        const userId = "<%= user._id %>";
+        fetch('/carts/remove', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, productId })
+        }).then(() => location.reload())
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
+</html>

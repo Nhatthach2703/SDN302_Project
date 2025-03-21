@@ -6,12 +6,14 @@ exports.getCart = async (req, res) => {
     try {
         const { userId } = req.params;
 
-        const cart = await Cart.findOne({ user: userId }).populate('items.product', 'name price');
+        const cart = await Cart.findOne({ user: userId })
+            .populate('items.product', 'name price image'); // Thêm 'image'
+
         if (!cart) {
             return res.status(404).json({ error: 'Cart not found' });
         }
 
-        res.status(200).json(cart);
+        res.render('users/cart', { cart, user: req.user || null });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -76,6 +78,7 @@ exports.updateCartItem = async (req, res) => {
         await cart.save();
         res.status(200).json(cart);
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({ error: error.message });
     }
 };
