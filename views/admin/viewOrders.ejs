@@ -1,0 +1,65 @@
+<%- include('../partials/headerAdmin') %>
+    <div class="container mt-4">
+        <h2 class="mb-4">All Orders</h2>
+
+        <% if (orders.length> 0) { %>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Shipping</th>
+                        <th>Order Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orders.forEach((order, index)=> { %>
+                        <tr>
+                            <td>
+                                <%= index + 1 %>
+                            </td>
+                            <td>
+                                <%= order.user ? order.user.name : 'Unknown' %>
+                                    (<%= order.user ? order.user.email : 'N/A' %>)
+                            </td>
+                            <td>
+                                <ul>
+                                    <% order.items.forEach(item=> { %>
+                                        <li>
+                                            <%= item.product.name %> x <%= item.quantity %> ($<%= item.price %>)
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </td>
+                            <td>$<%= order.total %>
+                            </td>
+                            <td>
+                                <span class="badge 
+                                    <%= order.status === 'pending' ? 'bg-warning' :
+                                        order.status === 'shipped' ? 'bg-primary' :
+                                        order.status === 'delivered' ? 'bg-success' :
+                                        'bg-danger' %>">
+                                    <%= order.status %>
+                                </span>
+                            </td>
+                            <td>
+                                <%= order.paymentMethod %>
+                            </td>
+                            <td>
+                                <%= order.shippingMethod %>
+                            </td>
+                            <td>
+                                <%= new Date(order.orderDate).toLocaleString() %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+            <% } else { %>
+                <p class="alert alert-info">No orders found.</p>
+                <% } %>
+    </div>
