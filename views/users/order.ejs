@@ -4,61 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Checkout</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .product-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 10px;
+            border-radius: 6px;
+        }
+
+        .spinner-border {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .order-btn {
+            position: relative;
+        }
+
+        .order-btn .spinner-border {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class="mb-4">Checkout</h2>
+        <h2 class="mb-4 text-center">🛒 Checkout</h2>
 
-        <!-- Dữ liệu giỏ hàng được lưu trong div này -->
-        <div id="cartData" 
-            data-cart='<%= JSON.stringify(products) %>' 
+        <!-- Cart data -->
+        <div id="cartData"
+            data-cart='<%= JSON.stringify(products) %>'
             data-total="<%= products.reduce((sum, item) => sum + item.quantity * item.price, 0) %>">
         </div>
 
-        <div class="card p-4">
-            <h4>Order Summary</h4>
+        <div class="card shadow-sm p-4">
+            <h4 class="mb-3">🧾 Order Summary</h4>
             <ul class="list-group mb-3">
                 <% if (products.length > 0) { %>
                     <% products.forEach(item => { %>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <img src="<%= item.image || 'https://via.placeholder.com/50' %>" alt="Product Image" class="mr-2" width="50">
-                                <b><%= item.name %></b> (x<%= item.quantity %>)
+                            <div class="d-flex align-items-center">
+                                <img src="<%= item.image || 'https://via.placeholder.com/50' %>" alt="Product Image" class="product-image">
+                                <div>
+                                    <strong><%= item.name %></strong><br>
+                                    <small>Quantity: <%= item.quantity %></small>
+                                </div>
                             </div>
-                            <span>$<%= (item.quantity * item.price).toFixed(2) %></span>
+                            <span class="text-success fw-bold">$<%= (item.quantity * item.price).toFixed(2) %></span>
                         </li>
                     <% }) %>
                 <% } else { %>
-                    <p class="text-center">Your cart is empty.</p>
+                    <li class="list-group-item text-center text-muted">Your cart is empty.</li>
                 <% } %>
             </ul>
 
-            <h5>Total: $<span id="totalAmount"><%= products.reduce((sum, item) => sum + item.quantity * item.price, 0) %></span></h5>
+            <h5 class="text-end">Total: <span class="text-primary fw-bold"><span id="totalAmount"><%= products.reduce((sum, item) => sum + item.quantity * item.price, 0).toFixed(2) %></span></span></h5>
 
-            <form id="orderForm">
-                <div class="mb-3">
-                    <label for="paymentMethod" class="form-label">Payment Method:</label>
-                    <select id="paymentMethod" class="form-select">
-                        <option value="cash">Cash</option>
-                        <option value="card">Card</option>
-                    </select>
+            <form id="orderForm" class="mt-4">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="paymentMethod" class="form-label">Payment Method</label>
+                        <select id="paymentMethod" class="form-select" required>
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="shippingMethod" class="form-label">Shipping Method</label>
+                        <select id="shippingMethod" class="form-select" required>
+                            <option value="standard">Standard</option>
+                            <option value="express">Express</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="shippingMethod" class="form-label">Shipping Method:</label>
-                    <select id="shippingMethod" class="form-select">
-                        <option value="standard">Standard</option>
-                        <option value="express">Express</option>
-                    </select>
+                    <label for="deliveryDate" class="form-label">Delivery Date</label>
+                    <input type="date" id="deliveryDate" class="form-control" required>
                 </div>
 
-                <div class="mb-3">
-                    <label for="deliveryDate" class="form-label">Delivery Date:</label>
-                    <input type="date" id="deliveryDate" class="form-control">
+                <div class="text-end">
+                    <button type="button" class="btn btn-primary order-btn" onclick="placeOrder()">
+                        Place Order
+                        <span class="spinner-border spinner-border-sm d-none" id="orderSpinner" role="status" aria-hidden="true"></span>
+                    </button>
                 </div>
-
-                <button type="button" class="btn btn-primary" onclick="placeOrder()">Place Order</button>
             </form>
         </div>
     </div>
@@ -67,8 +101,21 @@
     <script>
         function placeOrder() {
             const cartData = JSON.parse(document.getElementById("cartData").dataset.cart);
-            const totalAmount = document.getElementById("cartData").dataset.total;
-            
+            const totalAmount = parseFloat(document.getElementById("cartData").dataset.total);
+            const paymentMethod = $("#paymentMethod").val();
+            const shippingMethod = $("#shippingMethod").val();
+            const deliveryDate = $("#deliveryDate").val();
+
+            if (!deliveryDate) {
+                alert("Please select a delivery date.");
+                return;
+            }
+
+            if (cartData.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+
             const orderData = {
                 user: "<%= user ? user._id : '' %>",
                 items: cartData.map(item => ({
@@ -77,22 +124,28 @@
                     price: item.price
                 })),
                 total: totalAmount,
-                paymentMethod: $("#paymentMethod").val(),
-                shippingMethod: $("#shippingMethod").val(),
-                deliveryDate: $("#deliveryDate").val()
+                paymentMethod,
+                shippingMethod,
+                deliveryDate
             };
+
+            // Show spinner
+            $("#orderSpinner").removeClass("d-none");
 
             $.ajax({
                 url: "/orders/create",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(orderData),
-                success: function(response) {
-                    alert("Order placed successfully!");
+                success: function (response) {
+                    alert("🎉 Order placed successfully!");
                     window.location.href = "/";
                 },
-                error: function(xhr) {
-                    alert("Failed to place order: " + xhr.responseText);
+                error: function (xhr) {
+                    alert("❌ Failed to place order: " + xhr.responseText);
+                },
+                complete: function () {
+                    $("#orderSpinner").addClass("d-none");
                 }
             });
         }

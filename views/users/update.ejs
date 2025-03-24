@@ -1,36 +1,101 @@
 <%- include('../partials/header') %>
-<div class="container mt-5">
-    <h1 class="text-center">📝 Update Profile</h1>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form action="/users/profile/edit" method="POST" class="card p-4 shadow">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username:</label>
-                    <input type="text" id="username" name="username" class="form-control" value="<%= userProfile.username %>" disabled>
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">Full Name:</label>
-                    <input type="text" id="name" name="name" class="form-control" value="<%= userProfile.name %>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
-                    <input type="email" id="email" name="email" class="form-control" value="<%= userProfile.email %>">
-                </div>
-                <div class="mb-3">
-                    <label for="phoneNumber" class="form-label">Phone Number:</label>
-                    <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" value="<%= userProfile.phoneNumber %>">
-                </div>
-                <div class="mb-3">
-                    <label for="address" class="form-label">Address:</label>
-                    <input type="text" id="address" name="address" class="form-control" value="<%= userProfile.address %>">
-                </div>
-                <div class="d-flex justify-content-around">
-                    <button type="submit" class="btn btn-success">💾 Save Changes</button>
-                    <a href="/users/profile" class="btn btn-secondary">⬅ Cancel</a>
-                </div>
-            </form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Update Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        body {
+            background: linear-gradient(to right, #ece9e6, #ffffff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-card {
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            font-weight: 700;
+            color: #6a3b89;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .btn-success {
+            background-color: #6a3b89;
+            border-color: #6a3b89;
+        }
+
+        .btn-success:hover {
+            background-color: #582d73;
+        }
+
+        .btn-secondary:hover {
+            background-color: #555;
+        }
+
+        input:disabled {
+            background-color: #f1f1f1;
+        }
+
+        .emoji-label {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5 mb-5">
+        <h1 class="text-center mb-4">📝 Update Your Profile</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-6">
+                <form action="/users/profile/edit" method="POST" class="form-card">
+                    <div class="mb-3">
+                        <label for="username" class="form-label emoji-label">👤 Username:</label>
+                        <input type="text" id="username" name="username" class="form-control" value="<%= userProfile.username %>" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label emoji-label">📛 Full Name:</label>
+                        <input type="text" id="name" name="name" class="form-control" value="<%= userProfile.name %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label emoji-label">📧 Email:</label>
+                        <input type="email" id="email" name="email" class="form-control" value="<%= userProfile.email %>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label emoji-label">📱 Phone Number:</label>
+                        <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" value="<%= userProfile.phoneNumber %>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label emoji-label">📍 Address:</label>
+                        <input type="text" id="address" name="address" class="form-control" value="<%= userProfile.address %>">
+                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-success px-4">
+                            <i class="fas fa-save me-2"></i>Save
+                        </button>
+                        <a href="/users/profile" class="btn btn-secondary px-4">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
+</html>

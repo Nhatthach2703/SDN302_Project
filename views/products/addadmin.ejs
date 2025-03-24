@@ -12,6 +12,7 @@
                 <div class="mb-3">
                     <label for="category" class="form-label">Category:</label>
                     <select id="category" name="category" class="form-select" required onchange="togglePetDetails()">
+                        <option value="" disabled selected>Choose categories</option>
                         <% categories.forEach(category => { %>
                             <option value="<%= category.name %>"><%= category.name %></option>
                         <% }); %>
