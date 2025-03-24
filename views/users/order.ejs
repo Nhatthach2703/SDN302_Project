@@ -1,195 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+    <title>Order Checkout</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<style>
-    body {
-        background: rgb(213, 217, 233);
-        min-height: 100vh;
-        vertical-align: middle;
-        display: flex;
-        font-family: Muli;
-        font-size: 14px
-    }
-
-    .card {
-        margin: auto;
-        width: 500px;
-        max-width: 800px;
-        border-radius: 20px
-    }
-
-    .mt-50 {
-        margin-top: 50px;
-    }
-
-    .mb-50 {
-        margin-bottom: 50px;
-    }
-
-    @media(max-width: 767px) {
-        .card {
-            width: 90%;
-            /* Card rộng hơn trên màn hình nhỏ */
-        }
-    }
-
-    @media(height:1366px) {
-        .card {
-            width: 75%
-        }
-    }
-
-    #orderno {
-        padding: 1vh 2vh 0;
-        font-size: smaller
-    }
-
-    .gap .col-2 {
-        background-color: rgb(213, 217, 233);
-        width: 1.2rem;
-        padding: 1.2rem;
-        margin-top: -2.5rem;
-        border-radius: 1.2rem
-    }
-
-    .title {
-        display: flex;
-        text-align: center;
-        font-size: 2rem;
-        font-weight: bold;
-        padding: 12%
-    }
-
-    .main {
-        padding: 0 2rem
-    }
-
-    .main img {
-        border-radius: 7px
-    }
-
-    .main p {
-        margin-bottom: 0;
-        font-size: 0.75rem
-    }
-
-    #sub-title p {
-        margin: 1vh 0 2vh 0;
-        font-size: 1rem
-    }
-
-    .row-main {
-        padding: 1.5vh 0;
-        align-items: center
-    }
-
-    hr {
-        margin: 1rem -1vh;
-        border-top: 1px solid rgb(214, 214, 214)
-    }
-
-    .total {
-        font-size: 1rem
-    }
-
-    @media(height: 1366px) {
-        .main p {
-            margin-bottom: 0;
-            font-size: 1.2rem
-        }
-
-        .total {
-            font-size: 1.5rem
-        }
-    }
-
-    .btn {
-        background-color: rgb(3, 122, 219);
-        border-color: rgb(3, 122, 219);
-        color: white;
-        margin: 7vh 0;
-        border-radius: 7px;
-        width: 60%;
-        font-size: 0.8rem;
-        padding: 0.8rem;
-        justify-content: center
-    }
-
-    .btn:focus {
-        box-shadow: none;
-        outline: none;
-        box-shadow: none;
-        color: white;
-        -webkit-box-shadow: none;
-        -webkit-user-select: none;
-        transition: none
-    }
-
-    .btn:hover {
-        color: white
-    }
-</style>
-
 <body>
-    <div class="card mt-50 mb-50">
+    <div class="container mt-5">
+        <h2 class="mb-4">Checkout</h2>
 
-        <div class="gap">
-            <div class="col-2 d-flex mx-auto"> </div>
-        </div>
-        <div class="title mx-auto"> Thank you for your order! </div>
-
-        <div class="main">
-            <div>
-                <span id="sub-title">
-                    <p><b>Payment Summary</b></p>
-                </span>
-
-                <% if (products && products.length> 0) { %>
-                    <% products.forEach(product=> { %>
-                        <div class="row row-main">
-                            <div class="col-3">
-                                <img class="img-fluid"
-                                    src="<%= product.image ? product.image : 'https://via.placeholder.com/100' %>">
-                            </div>
-                            <div class="col-6">
-                                <div class="row d-flex">
-                                    <p><b>
-                                            <%= product.name %>
-                                        </b></p>
-                                </div>
-                            </div>
-                            <div class="col-3 d-flex justify-content-end">
-                                <p><b>$<%= product.price.toFixed(2) %></b></p>
-                            </div>
-                        </div>
-                        <% }) %>
-                            <% } else { %>
-                                <p class="text-center">Không có sản phẩm nào trong đơn hàng.</p>
-                                <% } %>
-
-                                    <hr>
-                                    <div class="total">
-                                        <div class="row">
-                                            <div class="col"> <b>Total:</b> </div>
-                                            <div class="col d-flex justify-content-end">
-                                                <b>$<%= products.reduce((sum, p)=> sum + p.price, 0).toFixed(2) %></b>
-                                            </div>
-                                        </div>
-                                        <button class="btn d-flex mx-auto">Track your order</button>
-                                    </div>
-            </div>
+        <!-- Dữ liệu giỏ hàng được lưu trong div này -->
+        <div id="cartData" 
+            data-cart='<%= JSON.stringify(products) %>' 
+            data-total="<%= products.reduce((sum, item) => sum + item.quantity * item.price, 0) %>">
         </div>
 
+        <div class="card p-4">
+            <h4>Order Summary</h4>
+            <ul class="list-group mb-3">
+                <% if (products.length > 0) { %>
+                    <% products.forEach(item => { %>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <img src="<%= item.image || 'https://via.placeholder.com/50' %>" alt="Product Image" class="mr-2" width="50">
+                                <b><%= item.name %></b> (x<%= item.quantity %>)
+                            </div>
+                            <span>$<%= (item.quantity * item.price).toFixed(2) %></span>
+                        </li>
+                    <% }) %>
+                <% } else { %>
+                    <p class="text-center">Your cart is empty.</p>
+                <% } %>
+            </ul>
+
+            <h5>Total: $<span id="totalAmount"><%= products.reduce((sum, item) => sum + item.quantity * item.price, 0) %></span></h5>
+
+            <form id="orderForm">
+                <div class="mb-3">
+                    <label for="paymentMethod" class="form-label">Payment Method:</label>
+                    <select id="paymentMethod" class="form-select">
+                        <option value="cash">Cash</option>
+                        <option value="card">Card</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="shippingMethod" class="form-label">Shipping Method:</label>
+                    <select id="shippingMethod" class="form-select">
+                        <option value="standard">Standard</option>
+                        <option value="express">Express</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="deliveryDate" class="form-label">Delivery Date:</label>
+                    <input type="date" id="deliveryDate" class="form-control">
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="placeOrder()">Place Order</button>
+            </form>
+        </div>
     </div>
-</body>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function placeOrder() {
+            const cartData = JSON.parse(document.getElementById("cartData").dataset.cart);
+            const totalAmount = document.getElementById("cartData").dataset.total;
+            
+            const orderData = {
+                user: "<%= user ? user._id : '' %>",
+                items: cartData.map(item => ({
+                    product: item._id,
+                    quantity: item.quantity,
+                    price: item.price
+                })),
+                total: totalAmount,
+                paymentMethod: $("#paymentMethod").val(),
+                shippingMethod: $("#shippingMethod").val(),
+                deliveryDate: $("#deliveryDate").val()
+            };
+
+            $.ajax({
+                url: "/orders/create",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(orderData),
+                success: function(response) {
+                    alert("Order placed successfully!");
+                    window.location.href = "/";
+                },
+                error: function(xhr) {
+                    alert("Failed to place order: " + xhr.responseText);
+                }
+            });
+        }
+    </script>
+</body>
 </html>

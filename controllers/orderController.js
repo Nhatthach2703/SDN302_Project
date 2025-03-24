@@ -1,5 +1,5 @@
 const Order = require('../models/orderModel');
-
+const Cart = require('../models/cartModel');
 const Product = require('../models/productModel');
 exports.createOrder = async (req, res) => {
     try {
@@ -19,6 +19,15 @@ exports.createOrder = async (req, res) => {
         });
 
         const savedOrder = await newOrder.save();
+        
+
+        const cart = await Cart.findOne({ user });
+        if (!cart) {
+            return res.status(404).json({ error: 'Cart not found' });
+        }
+
+        cart.items = [];
+        await cart.save();
         res.status(201).json(savedOrder);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -43,14 +52,16 @@ exports.getOrders = async (req, res) => {
 
 exports.checkout = async (req, res) => {
     try {
-        let { productIds } = req.body;
+        let { productIds, quantities } = req.body;
 
-        if (!productIds || !Array.isArray(productIds) || productIds.length === 0) {
-            return res.status(400).send("Danh sách sản phẩm không hợp lệ.");
+        if (!productIds || !Array.isArray(productIds) || productIds.length === 0 ||
+            !quantities || !Array.isArray(quantities) || quantities.length !== productIds.length) {
+            return res.status(400).send("Danh sách sản phẩm hoặc số lượng không hợp lệ.");
         }
 
-        // Loại bỏ khoảng trắng dư thừa
+        // Chuẩn hóa dữ liệu
         productIds = productIds.map(id => id.trim());
+        quantities = quantities.map(qty => parseInt(qty.trim(), 10));
 
         // Tìm tất cả sản phẩm theo danh sách ID
         const products = await Product.find({ _id: { $in: productIds } });
@@ -59,12 +70,19 @@ exports.checkout = async (req, res) => {
             return res.status(400).send("Không tìm thấy sản phẩm nào.");
         }
 
-        res.render('users/order', { products, user: req.user || null });
+        // Gắn số lượng vào từng sản phẩm
+        const cartItems = products.map((product, index) => ({
+            ...product.toObject(),
+            quantity: quantities[index] || 1
+        }));
+
+        res.render('users/order', { products: cartItems, user: req.user || null });
     } catch (error) {
         console.error("Lỗi khi checkout:", error);
         res.status(500).send("Lỗi server, vui lòng thử lại.");
     }
 };
+
 
 
 
@@ -127,13 +145,13 @@ exports.deleteOrder = async (req, res) => {
 
 exports.viewAllOrders = async (req, res) => {
     try {
-      const orders = await Order.find()
-        .populate('user', 'name email')
-        .populate('items.product', 'name price');
-  
-      res.render('admin/viewOrders', { orders, user: req.user || null });
+        const orders = await Order.find()
+            .populate('user', 'name email')
+            .populate('items.product', 'name price');
+
+        res.render('admin/viewOrders', { orders, user: req.user || null });
     } catch (error) {
-      res.status(500).send('Server Error');
+        res.status(500).send('Server Error');
     }
-  };
+};
 

@@ -4,7 +4,7 @@ const orderController = require('../controllers/orderController');
 const { authorizeRole } = require('../middleware/auth');
 
 router.get('/admin', authorizeRole('admin'), orderController.viewAllOrders);
-router.post('/', orderController.createOrder);
+router.post('/create', orderController.createOrder);
 router.get('/', orderController.getOrders);
 router.post('/checkout', orderController.checkout)
 router.get('/:id', orderController.getOrderById);
