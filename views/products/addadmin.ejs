@@ -11,9 +11,9 @@
 
                 <div class="mb-3">
                     <label for="category" class="form-label">Category:</label>
-                    <select id="category" name="category" class="form-select" required>
+                    <select id="category" name="category" class="form-select" required onchange="togglePetDetails()">
                         <% categories.forEach(category => { %>
-                            <option value="<%= category._id %>"><%= category.name %></option>
+                            <option value="<%= category.name %>"><%= category.name %></option>
                         <% }); %>
                     </select>
                 </div>
@@ -38,6 +38,23 @@
                     <textarea id="description" name="description" class="form-control" rows="3"></textarea>
                 </div>
 
+                <!-- Pet Details Section -->
+                <div id="petDetailsSection" class="d-none">
+                    <h5 class="mt-3">Pet Details</h5>
+                    <div class="mb-3">
+                        <label for="age" class="form-label">Age (months):</label>
+                        <input type="number" id="age" name="petDetails[age]" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="weight" class="form-label">Weight (kg):</label>
+                        <input type="number" id="weight" name="petDetails[weight]" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="character" class="form-label">Character:</label>
+                        <input type="text" id="character" name="petDetails[character]" class="form-control">
+                    </div>
+                </div>
+
                 <div class="d-flex justify-content-around">
                     <button type="submit" class="btn btn-success">✅ Add Product</button>
                     <a href="/products/admin" class="btn btn-secondary">⬅ Back</a>
@@ -46,3 +63,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    function togglePetDetails() {
+        const category = document.getElementById("category").value.toLowerCase();
+        const petDetailsSection = document.getElementById("petDetailsSection");
+        if (category === "dog" || category === "cat") {
+            petDetailsSection.classList.remove("d-none");
+        } else {
+            petDetailsSection.classList.add("d-none");
+        }
+    }
+</script>
