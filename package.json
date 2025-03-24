@@ -1,4 +1,7 @@
 {
+  "engines": {
+  "node": ">=16"
+  },
   "name": "petshop",
   "version": "0.0.0",
   "private": true,
