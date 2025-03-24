@@ -1,58 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>PETSHOP</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
     <style>
-        .bottom-slide img { width: 100%; }
-        .top-slide { 
-            width: 50%; 
-            height: 45%; 
-            background-color: white; 
-            position: absolute; 
-            top: 30%; 
-            left: 25%; 
-            border-radius: 2%; 
-            text-align: center; 
+        .bottom-slide img {
+            width: 100%;
+        }
+
+        .top-slide {
+            width: 50%;
+            height: 45%;
+            background-color: white;
+            position: absolute;
+            top: 30%;
+            left: 25%;
+            border-radius: 2%;
+            text-align: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .pet-cate, .accessori-cate { 
-            border-radius: 40px; 
-            transition: all 0.3s ease; 
+
+        .pet-cate,
+        .accessori-cate {
+            border-radius: 40px;
+            transition: all 0.3s ease;
         }
-        .pet-cate:hover, .accessori-cate:hover {
+
+        .pet-cate:hover,
+        .accessori-cate:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
-        .card { 
-            border: 1px solid #e5e5e5; 
-            border-radius: 15px; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
-            transition: all 0.3s ease; 
-            background-color: #fff; 
+
+        .card {
+            border: 1px solid #e5e5e5;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            background-color: #fff;
         }
-        .card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
+
         .product-title {
             font-size: 18px;
             font-weight: 600;
             color: #333;
             margin: 10px 0;
         }
+
         .product-price {
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 600;
         }
+
         /* .navbar-nav {
             font-size: 28px;
             font-weight: 600;
@@ -64,143 +82,170 @@
             font-weight: 500;
             transition: color 0.3s ease;
         }
+
         .see-more:hover {
             color: #6a3f88;
         }
+
         .see-more i {
             margin-left: 5px;
         }
-        
     </style>
 </head>
+
 <body>
     <%- include('../partials/header') %>
 
-    <!-- Top Slide and Bottom Slide -->
-    <div class="top-slide">
-        <h4 style="color: #7b4a9e; margin-top: 80px">Say hello with PetShop</h4>
-        <h4 style="text-align: justify; padding: 20px; font-size: 16px; line-height: 28px;">
-            Pet Shop is a pet store specializing in supplies for dogs and cats, offering items such as accessories, clothing, food, shampoo, cages, collars, leashes, and other pet products. It is a top destination providing professional pet services including spa baths, grooming, hair trimming, and pet boarding. With the best service quality, it is highly trusted and appreciated by customers.
-        </h4>
-    </div>
-    <div class="bottom-slide">
-        <img src="images/slider.png" alt="Slider" />
-    </div>
+        <!-- Top Slide and Bottom Slide -->
+        <div class="top-slide">
+            <h4 style="color: #7b4a9e; margin-top: 80px">Say hello with PetShop</h4>
+            <h4 style="text-align: justify; padding: 20px; font-size: 16px; line-height: 28px;">
+                Pet Shop is a pet store specializing in supplies for dogs and cats, offering items such as accessories,
+                clothing, food, shampoo, cages, collars, leashes, and other pet products. It is a top destination
+                providing professional pet services including spa baths, grooming, hair trimming, and pet boarding. With
+                the best service quality, it is highly trusted and appreciated by customers.
+            </h4>
+        </div>
+        <div class="bottom-slide">
+            <img src="images/slider.png" alt="Slider" />
+        </div>
 
-    <!-- Categories Section -->
-    <div class="container-fluid row mt-5 mb-5">
-        <div class="col-md-5 row align-items-center pet-cate" style="margin: auto; background-color: #ffc12c">
-            <div class="col-md-6">
-                <img src="images/pet.png" alt="Pets" style="width: 75%" />
-            </div>
-            <div class="col-md-6">
-                <h3 class="text-white text-center">Pets</h3>
-                <div class="d-flex align-items-center justify-content-center">
-                    <a href="/products?category=67cfb5625b64caf653f70ebc" class="btn btn-light">Shop Now</a>
+        <!-- Categories Section -->
+        <div class="container-fluid row mt-5 mb-5">
+            <div class="col-md-5 row align-items-center pet-cate" style="margin: auto; background-color: #ffc12c">
+                <div class="col-md-6">
+                    <img src="images/pet.png" alt="Pets" style="width: 75%" />
                 </div>
-            </div>
-        </div>
-        <div class="col-md-5 row align-items-center accessori-cate" style="margin: auto; background-color: #fb416b">
-            <div class="col-md-6">
-                <h3 class="text-white text-center">Pet Accessories</h3>
-                <div class="d-flex align-items-center justify-content-center">
-                    <a href="/products?category=67cfb5a25b64caf653f70ec0" class="btn btn-light">Shop Now</a>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <img src="images/acces.png" alt="Pet Accessories" style="width: 70%" />
-            </div>
-        </div>
-    </div>
-
-    <!-- Dogs Section -->
-    <div class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div class="navbar-nav me-auto" style="margin-left: 50px">Dogs</div>
-                <div class="d-flex" style="margin-right: 20px;">
-                    <a href="/products?category=67cfb5625b64caf653f70ebc" class="see-more">See More <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <% dogs.slice(0, 4).forEach((product) => { %>
-                <div class="col-md-3">
-                    <div class="card">
-                        <a class="col d-flex flex-column align-items-center justify-content-center" href="/products/<%= product._id %>" style="text-decoration: none">
-                            <img src="<%= product.image || '#' %>" alt="<%= product.name %>" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;" />
-                            <p class="product-title text-center text-black"><%= product.name %></p>
-                            <div class="btn active product-price text-white" style="background-color: #7b4a9e">
-                                <span><%= product.price.toLocaleString('vi-VN') %> VND</span>
-                            </div>
-                        </a>
+                <div class="col-md-6">
+                    <h3 class="text-white text-center">Pets</h3>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <a href="/products?category=67cfb5625b64caf653f70ebc" class="btn btn-light">Shop Now</a>
                     </div>
                 </div>
-            <% }) %>
-        </div>
-    </div>
-
-    <!-- Cats Section -->
-    <div class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div class="navbar-nav me-auto" style="margin-left: 50px">Cats</div>
-                <div class="d-flex" style="margin-right: 20px;">
-                    <a href="/products?category=67cfb5695b64caf653f70ebe" class="see-more">See More <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="col-md-5 row align-items-center accessori-cate" style="margin: auto; background-color: #fb416b">
+                <div class="col-md-6">
+                    <h3 class="text-white text-center">Pet Accessories</h3>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <a href="/products?category=67cfb5a25b64caf653f70ec0" class="btn btn-light">Shop Now</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/acces.png" alt="Pet Accessories" style="width: 70%" />
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <% cats.slice(0, 4).forEach((product) => { %>
-                <div class="col-md-3">
-                    <div class="card">
-                        <a class="col d-flex flex-column align-items-center justify-content-center" href="/products/<%= product._id %>" style="text-decoration: none">
-                            <img src="<%= product.image || '#' %>" alt="<%= product.name %>" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;" />
-                            <p class="product-title text-center text-black"><%= product.name %></p>
-                            <div class="btn active product-price text-white" style="background-color: #7b4a9e">
-                                <span><%= product.price.toLocaleString('vi-VN') %> VND</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            <% }) %>
-        </div>
-    </div>
 
-    <!-- Accessories Section -->
-    <div class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div class="navbar-nav me-auto" style="margin-left: 50px">Pet Accessories</div>
-                <div class="d-flex" style="margin-right: 20px;">
-                    <a href="/products?category=67cfb5a25b64caf653f70ec0" class="see-more">See More <i class="fas fa-arrow-right"></i></a>
+        <!-- Dogs Section -->
+        <div class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="navbar-nav me-auto" style="margin-left: 50px">Dogs</div>
+                    <div class="d-flex" style="margin-right: 20px;">
+                        <a href="/products?category=67cfb5625b64caf653f70ebc" class="see-more">See More <i
+                                class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <% accessories.slice(0, 4).forEach((product) => { %>
-                <div class="col-md-3">
-                    <div class="card">
-                        <a class="col d-flex flex-column align-items-center justify-content-center" href="/products/<%= product._id %>" style="text-decoration: none">
-                            <img src="<%= product.image || '#' %>" alt="<%= product.name %>" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;" />
-                            <p class="product-title text-center text-black"><%= product.name %></p>
-                            <div class="btn active product-price text-white" style="background-color: #7b4a9e">
-                                <span><%= product.price.toLocaleString('vi-VN') %> VND</span>
-                            </div>
-                        </a>
+        <div class="container-fluid">
+            <div class="row">
+                <% dogs.slice(0, 4).forEach((product)=> { %>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <a class="col d-flex flex-column align-items-center justify-content-center"
+                                href="/products/get/<%= product._id %>" style="text-decoration: none">
+                                <img src="<%= product.image || '#' %>" alt="<%= product.name %>"
+                                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;" />
+                                <p class="product-title text-center text-black">
+                                    <%= product.name %>
+                                </p>
+                                <div class="btn active product-price text-white" style="background-color: #7b4a9e">
+                                    <span>
+                                        <%= product.price.toLocaleString('vi-VN') %> VND
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+
+        <!-- Cats Section -->
+        <div class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="navbar-nav me-auto" style="margin-left: 50px">Cats</div>
+                    <div class="d-flex" style="margin-right: 20px;">
+                        <a href="/products?category=67cfb5695b64caf653f70ebe" class="see-more">See More <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-            <% }) %>
+            </div>
         </div>
-    </div>
+        <div class="container-fluid">
+            <div class="row">
+                <% cats.slice(0, 4).forEach((product)=> { %>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <a class="col d-flex flex-column align-items-center justify-content-center"
+                                href="/products/get/<%= product._id %>" style="text-decoration: none">
+                                <img src="<%= product.image || '#' %>" alt="<%= product.name %>"
+                                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;" />
+                                <p class="product-title text-center text-black">
+                                    <%= product.name %>
+                                </p>
+                                <div class="btn active product-price text-white" style="background-color: #7b4a9e">
+                                    <span>
+                                        <%= product.price.toLocaleString('vi-VN') %> VND
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
 
-    <hr style="width: 92%; display: flex; margin-left: 4%" />
-    <%- include('../partials/footer') %>
+        <!-- Accessories Section -->
+        <div class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="navbar-nav me-auto" style="margin-left: 50px">Pet Accessories</div>
+                    <div class="d-flex" style="margin-right: 20px;">
+                        <a href="/products?category=67cfb5a25b64caf653f70ec0" class="see-more">See More <i
+                                class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <% accessories.slice(0, 4).forEach((product)=> { %>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <a class="col d-flex flex-column align-items-center justify-content-center"
+                                href="/products/get/<%= product._id %>" style="text-decoration: none">
+                                <img src="<%= product.image || '#' %>" alt="<%= product.name %>"
+                                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;" />
+                                <p class="product-title text-center text-black">
+                                    <%= product.name %>
+                                </p>
+                                <div class="btn active product-price text-white" style="background-color: #7b4a9e">
+                                    <span>
+                                        <%= product.price.toLocaleString('vi-VN') %> VND
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+
+        <hr style="width: 92%; display: flex; margin-left: 4%" />
+        <%- include('../partials/footer') %>
 </body>
+
 </html>
