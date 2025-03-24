@@ -307,17 +307,69 @@ exports.getAddProductPage = async (req, res) => {
 exports.createProduct = async (req, res) => {
     try {
         const { name, category, price, stock, image, description, petDetails } = req.body;
-        const existingCategory = await Category.findById(category);
-        if (!existingCategory) return res.status(400).send('Invalid category');
 
-        const newProduct = new Product({ name, category, price, stock, image, description, petDetails });
+        // Kiểm tra xem category có phải là ObjectId hợp lệ không
+        let existingCategory;
+        if (category.match(/^[0-9a-fA-F]{24}$/)) {
+            existingCategory = await Category.findById(category);
+        } else {
+            existingCategory = await Category.findOne({ name: category });
+        }
+
+        if (!existingCategory) {
+            return res.status(400).json({ error: "Invalid category" });
+        }
+
+        // Chuẩn bị dữ liệu sản phẩm
+        let productData = {
+            name,
+            category: existingCategory._id,
+            price,
+            stock,
+            image,
+            description,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        };
+
+        // Kiểm tra nếu danh mục là "dog" hoặc "cat" thì cần petDetails
+        if (["dog", "cat"].includes(existingCategory.name.toLowerCase())) {
+            let parsedPetDetails = petDetails;
+
+            // Kiểm tra nếu petDetails là JSON string thì chuyển đổi
+            if (typeof petDetails === "string") {
+                try {
+                    parsedPetDetails = JSON.parse(petDetails);
+                } catch (err) {
+                    return res.status(400).json({ error: "Invalid pet details format" });
+                }
+            }
+
+            // Kiểm tra dữ liệu petDetails hợp lệ
+            if (!parsedPetDetails || !parsedPetDetails.age || !parsedPetDetails.weight) {
+                return res.status(400).json({ error: "Pet details (age and weight) are required for pet products" });
+            }
+
+            productData.petDetails = {
+                age: parsedPetDetails.age,
+                weight: parsedPetDetails.weight,
+                character: parsedPetDetails.character || ""
+            };
+        }
+
+        // Tạo sản phẩm mới
+        const newProduct = new Product(productData);
         await newProduct.save();
 
-        res.redirect('/products/admin'); // Redirect to product list
+        res.status(201).redirect('/products/admin');
     } catch (error) {
-        res.status(500).send('Server error while adding product');
+        console.error("Error while creating product:", error);
+        res.status(500).json({ error: "Server error while adding product" });
     }
 };
+
+
+
 
 // Render the edit product page
 exports.getEditProductPage = async (req, res) => {
